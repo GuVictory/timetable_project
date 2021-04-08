@@ -18,9 +18,15 @@
 ## Основные страницы приложения
 
 ### Авторизация
+![Login](https://github.com/GuVictory/timetable_project/blob/main/img/login.png)
 ### Регистрация
+![Register](https://github.com/GuVictory/timetable_project/blob/main/img/register.png)
 ### Профиль
+![Profile](https://github.com/GuVictory/timetable_project/blob/main/img/profile.png)
 ### Настройка предметов
+![Subjects](https://github.com/GuVictory/timetable_project/blob/main/img/subjects.png)
 ### Настройка пожеланий к расписанию
+![Work](https://github.com/GuVictory/timetable_project/blob/main/img/work.png)
 ### Расписание
+![Timetable](https://github.com/GuVictory/timetable_project/blob/main/img/timetable.png)
 
