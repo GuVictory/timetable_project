@@ -6,7 +6,6 @@ export interface User {
 
   group?: String;
   fullTime?: number;
-  busyTime?: number;
   subjects?: Subject[];
   desiredSchedule?: Week;
 }
@@ -17,7 +16,6 @@ export interface Student extends User {
 
 export interface Teacher extends User {
   fullTime: number;
-  busyTime: number;
   subjects: Subject[];
   desiredSchedule: Week;
 }

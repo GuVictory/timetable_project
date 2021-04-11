@@ -13,7 +13,9 @@ const { Title } = Typography;
 
 export interface RegisterProps {
   onRegister: (
-    username: string,
+    name: string,
+    surname: string,
+    email: string,
     password: string,
     type: string,
     group?: string,
@@ -27,11 +29,12 @@ export const Register: FC<RegisterProps> = ({ onRegister }) => {
   const onFinish = (values: any) => {
     console.log("Success:", values);
     onRegister(
-      values.username,
+      values.name,
+      values.surname,
+      values.email,
       values.password,
       values.switch,
-      values.switch === "student" ? values.group : undefined,
-      values.switch === "teacher" ? values.hours : undefined
+      values.switch === "student" ? values.group : undefined
     );
   };
 
@@ -56,15 +59,33 @@ export const Register: FC<RegisterProps> = ({ onRegister }) => {
         Регистрация
       </Title>
       <Form.Item
-        name="username"
-        rules={[{ required: true, message: "Пожалуйста введите логин!" }]}
+        name="name"
+        rules={[{ required: true, message: "Пожалуйста введите имя!" }]}
       >
-        <Input placeholder={"Имя пользователя"} />
+        <Input placeholder={"Имя"} />
+      </Form.Item>
+      <Form.Item
+        name="surname"
+        rules={[{ required: true, message: "Пожалуйста введите фамилию!" }]}
+      >
+        <Input placeholder={"Фамилия"} />
+      </Form.Item>
+      <Form.Item
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: "Пожалуйста введите email!",
+            type: "email",
+          },
+        ]}
+      >
+        <Input placeholder={"Email"} />
       </Form.Item>
 
       <Form.Item
         name="password"
-        rules={[{ required: true, message: "Пожалуйста введитепароль!" }]}
+        rules={[{ required: true, message: "Пожалуйста введите пароль!" }]}
       >
         <Input.Password placeholder={"Пароль"} />
       </Form.Item>
@@ -87,22 +108,6 @@ export const Register: FC<RegisterProps> = ({ onRegister }) => {
           ]}
         >
           <Input placeholder={"Учебная группа"} />
-        </Form.Item>
-      )}
-      {accType === "teacher" && (
-        <Form.Item
-          name="hours"
-          rules={[
-            {
-              required: true,
-              type: "number",
-              min: 0,
-              max: 99,
-              message: "Пожалуйста введите свою занятость в часах!",
-            },
-          ]}
-        >
-          <Input placeholder={"Колчество часов"} />
         </Form.Item>
       )}
 

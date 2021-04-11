@@ -49,11 +49,6 @@ export const UserHeader: FC<UserHeaderProps> = ({ user, onExit }) => {
                 {user.fullTime} часов
               </Descriptions.Item>
             )}
-            {user.busyTime && (
-              <Descriptions.Item label="Заполнено">
-                {user.busyTime} из {user.fullTime} часов
-              </Descriptions.Item>
-            )}
             {user.group && (
               <Descriptions.Item label="Группа">{user.group}</Descriptions.Item>
             )}

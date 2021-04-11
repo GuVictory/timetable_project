@@ -88,7 +88,6 @@ export const fakeTeacher: Teacher = {
   name: "Name",
   surname: "Surname",
   fullTime: 40,
-  busyTime: 26,
 
   subjects: [
     {

@@ -1,5 +1,7 @@
 import React, { FC } from "react";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
+import axios from "axios";
+
 import "./Login.less";
 const layout = {
   wrapperCol: { span: 24 },
@@ -12,13 +14,13 @@ const tailLayout = {
 const { Title } = Typography;
 
 export interface LoginProps {
-  onLogin: (username: string, password: string) => void;
+  onLogin: (email: string, password: string) => void;
 }
 
 export const Login: FC<LoginProps> = ({ onLogin }) => {
   const onFinish = (values: any) => {
     console.log("Success:", values);
-    onLogin(values.username, values.password);
+    onLogin(values.email, values.password);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -42,10 +44,10 @@ export const Login: FC<LoginProps> = ({ onLogin }) => {
         Авторизация
       </Title>
       <Form.Item
-        name="username"
-        rules={[{ required: true, message: "Пожалуйста введите ваш логин!" }]}
+        name="email"
+        rules={[{ required: true, message: "Пожалуйста введите ваш email!" }]}
       >
-        <Input placeholder={"Имя пользователя"} />
+        <Input placeholder={"Email пользователя"} />
       </Form.Item>
 
       <Form.Item
@@ -71,3 +73,22 @@ export const Login: FC<LoginProps> = ({ onLogin }) => {
     </Form>
   );
 };
+
+/*
+    useEffect(() => {
+        const appLink =
+            'https://script.google.com/macros/s/AKfycbxWkfRUud7c_' +
+            'w4SauLMSVkuWKb2D138PlvdJ9KNh_bLTG3Xzj1OkVKX-QenXstUrPiX/exec';
+
+        axios
+            .get(appLink)
+            .then((response) => {
+                console.log(response);
+                setNewsCards(response.data.result);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+* */
