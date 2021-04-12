@@ -223,4 +223,8 @@
 ![Work](https://github.com/GuVictory/timetable_project/blob/main/img/work.png)
 ### Расписание
 ![Timetable](https://github.com/GuVictory/timetable_project/blob/main/img/timetable.png)
-
+### Создание своего проекта
+![CreateProject_step1](https://github.com/GuVictory/timetable_project/blob/main/img/create_project_s1.png)
+![CreateProject_step2](https://github.com/GuVictory/timetable_project/blob/main/img/create_project_s2.png)
+![CreateProject_step3](https://github.com/GuVictory/timetable_project/blob/main/img/create_project_s3.png)
+![CreateProject_step4](https://github.com/GuVictory/timetable_project/blob/main/img/create_project_s4.png)

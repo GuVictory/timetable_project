@@ -1,4 +1,11 @@
-import { Student, Subject, Teacher, Week } from "../typings";
+import {Project, Student, Subject, Teacher, Week} from "../typings";
+
+export const emptyProject = {
+  name: '',
+  groups: [],
+  teachers: [],
+  subjects: [],
+} as Project;
 
 export const fakeSubjects = () =>
   [

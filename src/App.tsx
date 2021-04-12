@@ -7,15 +7,17 @@ import {
 } from "react-router-dom";
 import { TeacherApp } from "./apps/TeacherApp/TeacherApp";
 import "./App.less";
-import { fakeStudent, fakeTeacher } from "./utils/fakeData";
+import { fakeStudent, fakeTeacher, emptyProject } from "./utils/fakeData";
 import { Layout } from "antd";
 
-import { Student, Teacher, User } from "./typings";
+import {Project, Student, Teacher, User} from "./typings";
 import { StudentApp } from "./apps/StudentApp/StudentApp";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { API_Prefix, API_URL } from "./utils/api";
-import axios from "axios";
+import {CreateProjectStep1} from "./pages/CreateProjectStep1";
+import {CreateProjectStep2} from "./pages/CreateProjectStep2";
+import {CreateProjectStep3} from "./pages/CreateProjectStep3";
+import {ProjectCreated} from "./pages/ProjectCreated";
 
 const { Content } = Layout;
 
@@ -25,6 +27,7 @@ const fakeGetData = new Promise<User | undefined>((resolve, reject) => {
 
 const App: FC = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
+  const [project, setProject] = useState<Project | undefined>({ ...emptyProject });
 
   const onLogin = (user?: User) => {
     /*fakeGetData.then((user) => {
@@ -57,6 +60,19 @@ const App: FC = () => {
           <Layout>
             <Content className={"Auth-content"}>
               <Switch>
+                <Route exact path="/init_project">
+                  <CreateProjectStep1 project={project || {...emptyProject}} onSetProject={setProject} />
+                </Route>
+                <Route exact path="/setup_project_teachers">
+                  <CreateProjectStep2 project={project!} onSetProject={setProject} />
+                </Route>
+                <Route exact path="/setup_project_subjects">
+                  <CreateProjectStep3 project={project!} onSetProject={setProject} />
+                </Route>
+                <Route exact path="/project_created">
+                  <ProjectCreated />
+                </Route>
+
                 <Route exact path="/login">
                   <Login onLogin={onLogin} />
                 </Route>

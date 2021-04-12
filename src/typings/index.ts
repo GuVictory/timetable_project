@@ -31,3 +31,21 @@ export interface Week {
 export interface WorkingHours {
   lessons: Subject[];
 }
+
+export interface Project {
+  name: string;
+
+  groups: {
+    name: string;
+  } [];
+
+  teachers: {
+    email: string;
+    hours: number;
+  } [];
+
+  subjects: {
+    name: string;
+    hours: number;
+  } [];
+}
