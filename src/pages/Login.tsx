@@ -1,8 +1,10 @@
-import React, { FC } from "react";
+import React, {FC, useState} from "react";
 import { Form, Input, Button, Checkbox, Typography } from "antd";
 import axios from "axios";
 
 import "./Login.less";
+import {API_Prefix, API_URL} from "../utils/api";
+import {Student, Teacher, User} from "../typings";
 const layout = {
   wrapperCol: { span: 24 },
 };
@@ -14,13 +16,57 @@ const tailLayout = {
 const { Title } = Typography;
 
 export interface LoginProps {
-  onLogin: (email: string, password: string) => void;
+  onLogin: (user?: User) => void;
 }
 
 export const Login: FC<LoginProps> = ({ onLogin }) => {
+  const [error, setError] = useState<string>('');
+
   const onFinish = (values: any) => {
     console.log("Success:", values);
-    onLogin(values.email, values.password);
+
+    const userLogin = {
+      method: API_Prefix.login,
+      email: values.email,
+      password: values.password,
+    };
+
+    axios
+        .post(API_URL, userLogin)
+        .then((response) => {
+          console.log(response);
+
+          if (response.status === 404) {
+            setError('Пользователь с такими данными не найден!');
+          } else if (response.data.teacher) {
+            const teacher = {
+              id: response.data.email,
+              name: response.data.name,
+              surname: response.data.surname,
+              email: response.data.email,
+              fullTime: response.data.fullTime,
+              subjects: response.data.subjects,
+              desiredSchedule: response.data.desiredSchedule,
+            } as Teacher;
+
+            onLogin(teacher);
+          } else {
+            const student = {
+              id: response.data.email,
+              name: response.data.name,
+              surname: response.data.surname,
+              email: response.data.email,
+              group: response.data.group,
+            } as Student;
+
+            onLogin(student);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          onLogin(undefined);
+          setError('Произошла ошибка на стороне сервера!')
+        });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -43,6 +89,11 @@ export const Login: FC<LoginProps> = ({ onLogin }) => {
       <Title level={3} className={"Login-title"}>
         Авторизация
       </Title>
+
+      <Title level={5} className={"Login-error"}>
+        {error}
+      </Title>
+
       <Form.Item
         name="email"
         rules={[{ required: true, message: "Пожалуйста введите ваш email!" }]}
@@ -73,22 +124,3 @@ export const Login: FC<LoginProps> = ({ onLogin }) => {
     </Form>
   );
 };
-
-/*
-    useEffect(() => {
-        const appLink =
-            'https://script.google.com/macros/s/AKfycbxWkfRUud7c_' +
-            'w4SauLMSVkuWKb2D138PlvdJ9KNh_bLTG3Xzj1OkVKX-QenXstUrPiX/exec';
-
-        axios
-            .get(appLink)
-            .then((response) => {
-                console.log(response);
-                setNewsCards(response.data.result);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
-* */

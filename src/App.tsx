@@ -26,105 +26,15 @@ const fakeGetData = new Promise<User | undefined>((resolve, reject) => {
 const App: FC = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
 
-  const onLogin = (email: string, password: string) => {
-    fakeGetData.then((user) => {
+  const onLogin = (user?: User) => {
+    /*fakeGetData.then((user) => {
       setUser(user);
-    });
-
-    const userLogin = {
-      method: API_Prefix.login,
-      email: email,
-      password: password,
-    };
-
-    axios
-      .post(API_URL, userLogin)
-      .then((response) => {
-        console.log(response);
-
-        if (response.status === 404) {
-        } else if (response.data.teacher) {
-          const teacher = {
-            id: response.data.email,
-            name: response.data.name,
-            surname: response.data.surname,
-            email: response.data.email,
-            fullTime: response.data.fullTime,
-            subjects: response.data.subjects,
-            desiredSchedule: response.data.desiredSchedule,
-          } as Teacher;
-
-          setUser(teacher);
-        } else {
-          const student = {
-            id: response.data.email,
-            name: response.data.name,
-            surname: response.data.surname,
-            email: response.data.email,
-            group: response.data.group,
-          } as Student;
-
-          setUser(student);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setUser(undefined);
-      });
+    }); */
+    setUser(user);
   };
 
-  const onRegister = (
-    name: string,
-    surname: string,
-    email: string,
-    password: string,
-    type: string,
-    group?: string
-  ) => {
-    const userRegister = {
-      method: API_Prefix.register,
-      name: name,
-      surname: surname,
-      email: email,
-      password: password,
-      teacher: type === "teacher",
-      group: group,
-    };
-
-    axios
-      .post(API_URL, userRegister)
-      .then((response) => {
-        console.log(response);
-
-        if (response.status === 404) {
-        } else if (response.data.teacher) {
-          const teacher = {
-            id: response.data.email,
-            name: response.data.name,
-            surname: response.data.surname,
-            email: response.data.email,
-            fullTime: response.data.fullTime,
-            subjects: [],
-            desiredSchedule: response.data.desiredSchedule,
-          } as Teacher;
-
-          setUser(teacher);
-        } else {
-          const student = {
-            id: response.data.email,
-            name: response.data.name,
-            surname: response.data.surname,
-            email: response.data.email,
-            group: response.data.group,
-          } as Student;
-
-          setUser(student);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        setUser(undefined);
-      });
+  const onRegister = (user?: User) => {
+    setUser(user);
   };
 
   const logout = () => {

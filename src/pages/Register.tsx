@@ -1,6 +1,9 @@
 import React, { FC, useState } from "react";
 import { Form, Input, Button, Radio, Typography } from "antd";
 import "./Login.less";
+import {Student, Teacher, User} from "../typings";
+import {API_Prefix, API_URL} from "../utils/api";
+import axios from "axios";
 const layout = {
   wrapperCol: { span: 24 },
 };
@@ -12,30 +15,59 @@ const tailLayout = {
 const { Title } = Typography;
 
 export interface RegisterProps {
-  onRegister: (
-    name: string,
-    surname: string,
-    email: string,
-    password: string,
-    type: string,
-    group?: string,
-    hours?: number
-  ) => void;
+  onRegister: (user?: User) => void;
 }
 
 export const Register: FC<RegisterProps> = ({ onRegister }) => {
   const [accType, setAccType] = useState<String>("student");
+  const [error, setError] = useState<string>('');
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
-    onRegister(
-      values.name,
-      values.surname,
-      values.email,
-      values.password,
-      values.switch,
-      values.switch === "student" ? values.group : undefined
-    );
+    const userRegister = {
+      method: API_Prefix.register,
+      name: values.name,
+      surname: values.surname,
+      email: values.email,
+      password: values.password,
+      teacher: values.type === "teacher",
+      group: values.group,
+    };
+
+    axios
+        .post(API_URL, userRegister)
+        .then((response) => {
+          console.log(response);
+
+          if (response.data.teacher) {
+            const teacher = {
+              id: response.data.email,
+              name: response.data.name,
+              surname: response.data.surname,
+              email: response.data.email,
+              fullTime: response.data.fullTime,
+              subjects: [],
+              desiredSchedule: response.data.desiredSchedule,
+            } as Teacher;
+
+            onRegister(teacher);
+          } else {
+            const student = {
+              id: response.data.email,
+              name: response.data.name,
+              surname: response.data.surname,
+              email: response.data.email,
+              group: response.data.group,
+            } as Student;
+
+            onRegister(student);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          onRegister(undefined);
+          setError('Произошла ошибка на стороне сервера!')
+        });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -57,6 +89,9 @@ export const Register: FC<RegisterProps> = ({ onRegister }) => {
     >
       <Title level={3} className={"Login-title"}>
         Регистрация
+      </Title>
+      <Title level={5} className={"Login-error"}>
+        {error}
       </Title>
       <Form.Item
         name="name"
