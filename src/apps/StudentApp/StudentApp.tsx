@@ -56,7 +56,7 @@ export const StudentApp: FC<StudentAppProps> = ({ user, logout }) => {
                     <Profile user={user} logout={logout} />
                   </Route>
                   <Route exact path="/timetable">
-                    <Timetable timetable={user.schedule} />
+                    <Timetable timetable={user.schedule} userEmail={user.email} />
                   </Route>
                   <Redirect
                     from={"/register"}

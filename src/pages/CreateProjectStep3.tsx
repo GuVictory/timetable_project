@@ -2,6 +2,8 @@ import React, {FC, useState} from "react";
 import {Form, Input, Button, Typography} from "antd";
 import "./Login.less";
 import {Project} from "../typings";
+import axios from "axios";
+import { API_Prefix, API_URL } from "../utils/api";
 
 const layout = {
     wrapperCol: { span: 24 },
@@ -40,7 +42,28 @@ export const CreateProjectStep3: FC<CreateProject3Props> = ({ project: baseProje
 
         window.location.href = `/#/project_created`;
         console.log("Success:", baseProject);
-        onSetProject(undefined);
+
+        const data = {
+            method: API_Prefix.new_project,
+            name: project.name,
+            subjects: project.subjects,
+            groups: project.groups,
+            teachers: project.teachers,
+        }
+
+        axios
+        .post(API_URL, data)
+        .then((response) => {
+            console.log(response);
+            if (response.status === 409) {
+                console.log('Проект с таким названием уже существует')
+            } else {
+                onSetProject(project);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     };
 
     const onBackClick = () => {

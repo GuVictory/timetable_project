@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import {
   HashRouter as Router,
   Route,
@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { TeacherApp } from "./apps/TeacherApp/TeacherApp";
 import "./App.less";
-import { fakeStudent, fakeTeacher, emptyProject } from "./utils/fakeData";
+import { fakeTeacher, emptyProject } from "./utils/fakeData";
 import { Layout } from "antd";
 
 import {Project, Student, Teacher, User} from "./typings";
@@ -28,6 +28,10 @@ const fakeGetData = new Promise<User | undefined>((resolve, reject) => {
 const App: FC = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [project, setProject] = useState<Project | undefined>({ ...emptyProject });
+
+  /* fakeGetData.then((user) => {
+    setUser(user);
+  }); */
 
   const onLogin = (user?: User) => {
     /*fakeGetData.then((user) => {
@@ -50,7 +54,7 @@ const App: FC = () => {
       {user ? (
         <>
           {user.desiredSchedule ? (
-            <TeacherApp user={user as Teacher} logout={logout} />
+            <TeacherApp user={user as Teacher} logout={logout} setUser={setUser} />
           ) : (
             <StudentApp user={user as Student} logout={logout} />
           )}

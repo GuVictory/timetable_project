@@ -2,6 +2,7 @@ export interface User {
   id: String;
   name: String;
   surname: String;
+  email: String;
   schedule?: Week;
 
   group?: String;
@@ -22,6 +23,7 @@ export interface Teacher extends User {
 
 export interface Subject {
   title: String;
+  score?: number;
 }
 
 export interface Week {

@@ -8,4 +8,5 @@ export const API_Prefix = {
   timetable: "t",
   new_project: "p",
   project_timetable: "f",
+  all_subjects: "a",
 };

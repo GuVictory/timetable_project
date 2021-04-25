@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import { Form, Input, Button, Checkbox, Typography } from "antd";
+import { Form, Input, Button, Typography } from "antd";
 import axios from "axios";
 
 import "./Login.less";

@@ -1,23 +1,25 @@
 import React, { FC, useState } from "react";
 import { Checkbox, Row, Col, Tag, Button, PageHeader } from "antd";
-import { Subject } from "../../../typings";
+import { Subject, Teacher, User } from "../../../typings";
 import "./Subjects.less";
-import { Typography } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { API_Prefix, API_URL } from "../../../utils/api";
 
-const { Title } = Typography;
 const { CheckableTag } = Tag;
 
 export interface SubjectsProps {
   allSubjects: Subject[];
-  teacherSubjects: Subject[];
+  teacher: Teacher;
+  setUser: (user: User) => void;
 }
 
 export const Subjects: FC<SubjectsProps> = ({
   allSubjects,
-  teacherSubjects,
+  teacher,
+  setUser
 }) => {
-  const [selectedTags, setSelectedTags] = useState<Subject[]>(teacherSubjects);
+  const [selectedTags, setSelectedTags] = useState<Subject[]>(teacher.subjects);
 
   const handleChange = (tag: Subject, checked: boolean) => {
     const nextSelectedTags = checked
@@ -28,8 +30,30 @@ export const Subjects: FC<SubjectsProps> = ({
 
   const onSave = () => {
     // Тут запилить отправку на сервер
-    console.log("Сохраняем новые предметы для препода");
-    console.log(selectedTags);
+
+    const data = {
+      method: API_Prefix.new_subjects,
+      email: teacher.email,
+      subjects: selectedTags
+    };
+
+    axios
+    .post(API_URL, data)
+    .then((response) => {
+      console.log(response);
+
+      if (response.status === 500) {
+        console.log('Ошибка на стороне сервера при сохранении предметов');
+      } else {
+        console.log("Сохраняем новые предметы для препода");
+        console.log(selectedTags);
+        setUser({ ...teacher, subjects: selectedTags });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      console.log('Ошибка на стороне сервера при сохранении предметов');
+    });
   };
 
   return (

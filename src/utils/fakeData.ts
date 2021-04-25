@@ -84,6 +84,7 @@ export const fakeWeek: Week = {
 
 export const fakeStudent: Student = {
   id: "id_of_user",
+  email: 'blavlalba',
   name: "Name",
   surname: "Surname",
   group: "Группа",
@@ -92,6 +93,7 @@ export const fakeStudent: Student = {
 
 export const fakeTeacher: Teacher = {
   id: "id_of_user",
+  email: 'blavlalba',
   name: "Name",
   surname: "Surname",
   fullTime: 40,

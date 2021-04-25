@@ -25,8 +25,6 @@ export const CreateProjectStep2: FC<CreateProject2Props> = ({ project, onSetProj
     }
 
     const onFinish = (values: any) => {
-        console.log("Success:", values);
-
         let teachers = [ ...project.teachers ];
 
         teachers.forEach(teacher => {

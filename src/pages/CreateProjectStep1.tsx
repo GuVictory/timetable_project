@@ -22,8 +22,6 @@ export interface CreateProject1Props {
 
 export const CreateProjectStep1: FC<CreateProject1Props> = ({ project, onSetProject }) => {
     const onFinish = (values: any) => {
-        console.log("Success:", values);
-
         const groups = values.groups.map((val: string) => ( { name: val } ));
         const teachers = values.teachers.map((val: any) => ( { email: val, hours: 0 } ));
         const subjects = values.subjects.map((val: any) => ( { name: val, hours: 0 } ));

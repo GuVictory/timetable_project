@@ -1,11 +1,15 @@
-import React, { FC, useState } from "react";
-import { Row, Col, Tag, Button, PageHeader, Table } from "antd";
+import React, { FC, useEffect, useState } from "react";
+import { Row, Col, Tag, PageHeader, Table } from "antd";
 import { columns, data } from "../utils/timetableData";
 import { Week } from "../typings";
 import { SyncOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { API_Prefix, API_URL } from "../utils/api";
 
 export interface TimetableProps {
   timetable?: Week;
+  userEmail?: String;
+  projectName?: String;
 }
 
 interface tableRaw {
@@ -19,7 +23,10 @@ interface tableRaw {
   sat: String;
 }
 
-export const Timetable: FC<TimetableProps> = ({ timetable }) => {
+export const Timetable: FC<TimetableProps> = ({ timetable: baseTimetable, userEmail, projectName }) => {
+
+  const [timetable, setTimetable] = useState<Week | undefined>(baseTimetable)
+
   const createTable = () => {
     const table: tableRaw[] = [];
 
@@ -41,6 +48,56 @@ export const Timetable: FC<TimetableProps> = ({ timetable }) => {
 
     return table;
   };
+
+  useEffect(() => {
+
+    if (!timetable) {
+      if (userEmail) {
+
+        const data = {
+          method: API_Prefix.timetable,
+          email: userEmail,
+        }
+
+        axios
+        .post(API_URL, data)
+        .then((response) => {
+          console.log(response);
+          if (response.status === 500) {
+            console.log('Ошибка при запросе всего расписания');
+          } else {
+            setTimetable(response.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log('Ошибка при запросе всего расписания');
+        });
+      } else if (projectName) {
+
+        const data = {
+          method: API_Prefix.project_timetable,
+          project_name: projectName,
+        }
+
+        axios
+        .post(API_URL, data)
+        .then((response) => {
+          console.log(response);
+          if (response.status === 500) {
+            console.log('Ошибка при запросе всего расписания для проекта');
+          } else {
+            setTimetable(response.data)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log('Ошибка при запросе всего расписания для проекта');
+        });
+      }
+    }
+
+  }, [projectName, timetable, userEmail]);
 
   return (
     <>

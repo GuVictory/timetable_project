@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   HashRouter as Router,
   Route,
@@ -15,20 +15,43 @@ import {
   ClockCircleOutlined,
   CalendarOutlined,
 } from "@ant-design/icons";
-import { Teacher } from "../../typings";
+import { Subject, Teacher, User } from "../../typings";
+import axios from "axios";
 import { Profile } from "../../pages/Profile";
 import { Subjects } from "./pages/Subjects";
 import { fakeAllSubjects } from "../../utils/fakeData";
 import { WorkingHours } from "./pages/WorkingHours";
+import { API_Prefix, API_URL } from "../../utils/api";
 
-const { Sider, Content, Footer } = Layout;
+const { Sider, Content } = Layout;
 
 export interface TeacherAppProps {
   user: Teacher;
+  setUser: (user: User) => void;
   logout: () => void;
 }
 
-export const TeacherApp: FC<TeacherAppProps> = ({ user, logout }) => {
+export const TeacherApp: FC<TeacherAppProps> = ({ user, logout, setUser }) => {
+  const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
+
+  useEffect(() => {
+    axios
+    .post(API_URL, { method: API_Prefix.all_subjects })
+    .then((response) => {
+      console.log(response);
+
+      if (response.status === 500) {
+        console.log('Ошибка при запросе всего расписания');
+      } else {
+        setAllSubjects(response.data.subjects)
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      console.log('Ошибка при запросе всего расписания');
+    });
+  }, []);
+
   return (
     <Router>
       <Layout>
@@ -71,15 +94,16 @@ export const TeacherApp: FC<TeacherAppProps> = ({ user, logout }) => {
                   </Route>
                   <Route exact path="/subjects">
                     <Subjects
-                      teacherSubjects={user.subjects}
-                      allSubjects={fakeAllSubjects}
+                      allSubjects={allSubjects}
+                      teacher={user}
+                      setUser={setUser}
                     />
                   </Route>
                   <Route exact path="/working_hours">
-                    <WorkingHours user={user} />
+                    <WorkingHours user={user} setUser={setUser} />
                   </Route>
                   <Route exact path="/timetable">
-                    <Timetable timetable={user.schedule} />
+                    <Timetable timetable={user.schedule} userEmail={user.email} />
                   </Route>
                   <Redirect
                     from={"/register"}
