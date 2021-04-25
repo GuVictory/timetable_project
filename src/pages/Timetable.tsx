@@ -52,11 +52,12 @@ export const Timetable: FC<TimetableProps> = ({ timetable: baseTimetable, userEm
   useEffect(() => {
 
     if (!timetable) {
-      if (userEmail) {
+      if (userEmail && projectName) {
 
         const data = {
           method: API_Prefix.timetable,
           email: userEmail,
+          project_name: projectName,
         }
 
         axios
