@@ -53,8 +53,8 @@ const App: FC = () => {
     <>
       {user ? (
         <>
-          {user.desiredSchedule ? (
-            <TeacherApp user={user as Teacher} logout={logout} setUser={setUser} />
+          {(user.desiredSchedule && project) ? (
+            <TeacherApp user={user as Teacher} logout={logout} setUser={setUser} projectName={project.name} />
           ) : (
             <StudentApp user={user as Student} logout={logout} />
           )}

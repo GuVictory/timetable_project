@@ -29,14 +29,21 @@ export interface TeacherAppProps {
   user: Teacher;
   setUser: (user: User) => void;
   logout: () => void;
+  projectName?: string;
 }
 
-export const TeacherApp: FC<TeacherAppProps> = ({ user, logout, setUser }) => {
+export const TeacherApp: FC<TeacherAppProps> = ({ user, logout, setUser , projectName}) => {
   const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
 
   useEffect(() => {
+
+    const data = {
+      method: API_Prefix.all_subjects,
+      project_name: projectName,
+    }
+    
     axios
-    .post(API_URL, { method: API_Prefix.all_subjects })
+    .post(API_URL, data)
     .then((response) => {
       console.log(response);
 
